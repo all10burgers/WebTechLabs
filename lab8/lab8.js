@@ -7,17 +7,18 @@ function getDataFromForm() {
 }
 
 function runAjax(fname, lname) {
-  var xhr = new XMLHttpRequest();
-  var url = '/lab8/ajax.php?fname=' + fname + '&lname=' + lname;
+  if (fname.length === 0 || lname.length === 0) {
+      document.getElementById('responseString').innerHTML = '';
+      return;
+  } else {
+      const xhr = new XMLHttpRequest();
+      
+      xhr.onload = function() {
+          document.getElementById('responseString').innerHTML = this.responseText;
+      };
 
-  xhr.open('GET', url, true);
-
-  xhr.onreadystatechange = function () {
-      if (xhr.readyState == 4 && xhr.status == 200) {
-          var response = xhr.responseText;
-          document.getElementById('responseString').innerText = response;
-      }
-  };
-
-  xhr.send();
+      // Directly append parameters to the URL
+      xhr.open('GET', '/lab8/ajax.php?fname=' + fname + '&lname=' + lname);
+      xhr.send();
+  }
 }
